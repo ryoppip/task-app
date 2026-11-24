@@ -4,14 +4,39 @@
 
 ## プロジェクト概要
 
-- 名称: task-app(タスク管理アプリ)
-- 状態: 開発開始前。ソースコード・技術スタックは未定
+- 名称: Habit Quest(習慣・目標・成長記録を一元管理する Web アプリ)
+- 技術: Next.js(App Router)/ React / TypeScript(strict)/ Tailwind CSS v4 / Vitest。Supabase は STEP 9、Recharts は使う STEP で導入
+- 進め方: STEP 1〜10 の順に実装し、各 STEP の完了ごとに報告してユーザーの確認を待つ
 
-技術スタックが決まったら、このファイルに次の内容を追記すること。
+Next.js は学習データと仕様が異なる場合がある。詳細は @AGENTS.md を参照。
 
-- 使用言語・フレームワーク
-- セットアップ、起動、ビルド、テスト、Lint の各コマンド
-- ディレクトリ構成と、コードを読むだけでは分からない設計上の決まりごと
+## コマンド
+
+| 用途 | コマンド |
+|---|---|
+| セットアップ | `npm install` |
+| 開発サーバー | `npm run dev` |
+| ビルド | `npm run build` |
+| 型チェック | `npm run typecheck` |
+| Lint | `npm run lint` |
+| テスト | `npm test`(`npx vitest` の直接実行は、パスが小文字の `c:` だと失敗する) |
+
+## 構成
+
+- `src/app/`: ルーティング。画面の中身は `src/components/` に置く
+- `src/components/`: `layout` / `ui`(汎用部品)/ 機能別
+- `src/hooks/`: UI とデータ層をつなぐ
+- `src/lib/domain/`: 型と純粋な計算ロジック(単体テスト必須)
+- `src/lib/repositories/`: データアクセス。UI は `types.ts` のインターフェースだけに依存し、実装の選択は `index.ts` に限定する
+- `src/lib/query/`: 取得結果の共有と楽観的更新
+
+## 設計上の決まりごと
+
+- `any` を使わない
+- 日付は Asia/Tokyo 基準の `YYYY-MM-DD`。`src/lib/date/date-key.ts` の関数を使い、`Date` の日付計算を直接書かない
+- 色は `src/app/globals.css` のトークンだけを使う(Tailwind の既定パレットは無効)。文字とボタンの緑は `primary-strong`、図形は `primary`
+- 累計 XP は `xpTransactions` の合計を正とする。達成・取消は必ず `repositories.achievements` を通す
+- ゲーム要素を増やしすぎず、「必ず習慣になる」と保証する文言は使わない
 
 ## Git 運用ルール
 

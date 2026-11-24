@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* 色はここで定義したトークンだけを使う(既定パレットは無効化) */
+@theme {
+  --color-*: initial;
+  --color-background: #faf9f6;
+  --color-card: #ffffff;
+  --color-primary: #4fa77c;
+  /* 白背景の文字・ボタン背景用。primary と白のコントラスト不足を補う濃色 */
+  --color-primary-strong: #2f7a57;
+  --color-secondary: #dcecf7;
+  --color-foreground: #263247;
+  --color-muted: #5f6b7a;
+  --color-line: #e9ecef;
+  --color-danger: #b4483f;
+
+  --radius-card: 0.625rem;
+  --radius-control: 0.5rem;
+
+  /* system-ui は Windows でかなの詰まった Yu Gothic UI になるため使わない */
+  --font-sans:
+    "Segoe UI", "Hiragino Sans", "Noto Sans JP", "BIZ UDPGothic", Meiryo,
+    sans-serif;
+}
+
+@layer base {
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  button:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary-strong);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -28,3 +28,9 @@ Thumbs.db
 # Claude Code の個人設定
 .claude/settings.local.json
 CLAUDE.local.md
+
+# Next.js・TypeScript・Vercel
+out/
+next-env.d.ts
+*.tsbuildinfo
+.vercel/
