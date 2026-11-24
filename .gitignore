@@ -1,0 +1,30 @@
+# 秘密情報
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# 依存パッケージ
+node_modules/
+.venv/
+__pycache__/
+
+# ビルド生成物
+dist/
+build/
+.next/
+coverage/
+
+# ログ
+*.log
+
+# OS・エディタ
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude Code の個人設定
+.claude/settings.local.json
+CLAUDE.local.md
