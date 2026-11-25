@@ -1,7 +1,6 @@
 import {
   BookOpen,
   ChartColumn,
-  Dumbbell,
   Flag,
   House,
   ListChecks,
@@ -29,10 +28,10 @@ export const PRIMARY_NAV: NavItem[] = [
     icon: Flag,
   },
   {
-    href: "/workouts",
-    label: "筋トレ・ジム",
-    shortLabel: "筋トレ",
-    icon: Dumbbell,
+    href: "/analytics",
+    label: "積み上げ・分析",
+    shortLabel: "積み上げ",
+    icon: ChartColumn,
   },
 ];
 
@@ -43,12 +42,6 @@ export const SECONDARY_NAV: NavItem[] = [
     label: "目標・タスク",
     shortLabel: "目標",
     icon: Target,
-  },
-  {
-    href: "/analytics",
-    label: "積み上げ・分析",
-    shortLabel: "分析",
-    icon: ChartColumn,
   },
   {
     href: "/reviews",

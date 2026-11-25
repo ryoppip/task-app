@@ -2,13 +2,11 @@ import { isDateKey, toDateKey, type DateKey } from "@/lib/date/date-key";
 import type {
   Challenge,
   Entity,
-  Exercise,
   Goal,
   Habit,
   HabitLog,
   Profile,
   Task,
-  WorkoutLog,
 } from "@/lib/domain/types";
 import { RepositoryError } from "../errors";
 import type { CrudRepository, Repositories } from "../types";
@@ -30,8 +28,6 @@ interface CrudCollections {
   challenges: Challenge;
   goals: Goal;
   tasks: Task;
-  exercises: Exercise;
-  workouts: WorkoutLog;
 }
 
 function notFound(): RepositoryError {
@@ -102,7 +98,6 @@ export function createLocalRepositories({
     state.profile ??= {
       ...createEntity(),
       displayName: "",
-      workoutHabitId: null,
     };
     return state.profile;
   }
@@ -154,7 +149,7 @@ export function createLocalRepositories({
       async listXpTransactions() {
         return db.read().xpTransactions;
       },
-      async complete({ habitId, logDate, source }) {
+      async complete({ habitId, logDate }) {
         assertLoggableDate(logDate);
         return db.write((state) => {
           const existing = state.habitLogs.find(
@@ -176,7 +171,6 @@ export function createLocalRepositories({
             id: createId(),
             habitId,
             logDate,
-            source,
             xpAwarded: habit.xp,
             createdAt,
           };
@@ -192,13 +186,13 @@ export function createLocalRepositories({
           return log;
         });
       },
-      async cancel({ habitId, logDate, onlySource }) {
+      async cancel({ habitId, logDate }) {
         return db.write((state) => {
           const index = state.habitLogs.findIndex(
             (log) => log.habitId === habitId && log.logDate === logDate,
           );
           const log = state.habitLogs[index];
-          if (!log || (onlySource && log.source !== onlySource)) return null;
+          if (!log) return null;
 
           state.habitLogs.splice(index, 1);
           state.xpTransactions.push({
@@ -221,15 +215,6 @@ export function createLocalRepositories({
       }
     }),
     tasks: createCrud("tasks"),
-    exercises: createCrud("exercises", (state, exerciseId) => {
-      if (state.workouts.some((log) => log.exerciseId === exerciseId)) {
-        throw new RepositoryError(
-          "invalid_input",
-          "記録がある種目は削除できません。",
-        );
-      }
-    }),
-    workouts: createCrud("workouts"),
 
     dailyReviews: {
       async list() {

@@ -6,7 +6,9 @@
 
 - 名称: Habit Quest(習慣・目標・成長記録を一元管理する Web アプリ)
 - 技術: Next.js(App Router)/ React / TypeScript(strict)/ Tailwind CSS v4 / Vitest。Supabase は STEP 9、Recharts は使う STEP で導入
-- 進め方: STEP 1〜10 の順に実装し、各 STEP の完了ごとに報告してユーザーの確認を待つ
+- 中心となる体験: 習慣を記録するほど、細身のキャラクターが筋肉質に成長していく様子を見せる
+- 対象外: 筋トレ・ジム記録(種目・重量・回数など)。筋トレも、ほかと同じ1つの習慣として扱う
+- 進め方: STEP 1〜10 の順に実装し(STEP 6 の筋トレ・ジム記録は欠番)、各 STEP の完了ごとに報告してユーザーの確認を待つ
 
 Next.js は学習データと仕様が異なる場合がある。詳細は @AGENTS.md を参照。
 

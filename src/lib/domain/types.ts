@@ -29,8 +29,6 @@ export interface Target {
 
 export interface Profile extends Entity {
   displayName: string;
-  /** 筋トレを記録したときに自動で達成扱いにする習慣 */
-  workoutHabitId: string | null;
 }
 
 export interface Habit extends Entity {
@@ -44,13 +42,10 @@ export interface Habit extends Entity {
   archivedAt: Timestamp | null;
 }
 
-export type HabitLogSource = "manual" | "workout";
-
 export interface HabitLog {
   id: string;
   habitId: string;
   logDate: DateKey;
-  source: HabitLogSource;
   /** 付与時点の XP。習慣の設定を後で変えても変わらない */
   xpAwarded: number;
   createdAt: Timestamp;
@@ -107,19 +102,6 @@ export interface Task extends Entity {
   priority: TaskPriority;
   goalId: string | null;
   completedAt: Timestamp | null;
-}
-
-export interface Exercise extends Entity {
-  name: string;
-}
-
-export interface WorkoutLog extends Entity {
-  workoutDate: DateKey;
-  exerciseId: string;
-  weightKg: number;
-  reps: number;
-  sets: number;
-  memo: string;
 }
 
 export interface DailyReview extends Entity {

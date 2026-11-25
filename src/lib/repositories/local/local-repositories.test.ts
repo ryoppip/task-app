@@ -90,14 +90,8 @@ describe("達成と XP", () => {
   it("同じ日に2回達成しても XP は1回分", async () => {
     const { id } = await createHabit();
     const key = { habitId: id, logDate: TODAY };
-    const first = await repos.achievements.complete({
-      ...key,
-      source: "manual",
-    });
-    const second = await repos.achievements.complete({
-      ...key,
-      source: "workout",
-    });
+    const first = await repos.achievements.complete(key);
+    const second = await repos.achievements.complete(key);
     expect(second).toEqual(first);
     expect(await repos.achievements.listLogs()).toHaveLength(1);
     expect(await totalXp()).toBe(50);
@@ -106,7 +100,7 @@ describe("達成と XP", () => {
   it("取り消すと XP も戻り、二重に取り消しても減らない", async () => {
     const { id } = await createHabit();
     const key = { habitId: id, logDate: TODAY };
-    await repos.achievements.complete({ ...key, source: "manual" });
+    await repos.achievements.complete(key);
     await repos.achievements.cancel(key);
     expect(await repos.achievements.cancel(key)).toBeNull();
     expect(await totalXp()).toBe(0);
@@ -117,27 +111,17 @@ describe("達成と XP", () => {
   it("XP 設定を変えても、過去の獲得分と取消額は変わらない", async () => {
     const { id } = await createHabit(50);
     const key = { habitId: id, logDate: TODAY };
-    await repos.achievements.complete({ ...key, source: "manual" });
+    await repos.achievements.complete(key);
     await repos.habits.update(id, { xp: 999 });
     expect(await totalXp()).toBe(50);
     await repos.achievements.cancel(key);
     expect(await totalXp()).toBe(0);
   });
 
-  it("onlySource が違う記録は取り消さない", async () => {
-    const { id } = await createHabit();
-    const key = { habitId: id, logDate: TODAY };
-    await repos.achievements.complete({ ...key, source: "manual" });
-    expect(
-      await repos.achievements.cancel({ ...key, onlySource: "workout" }),
-    ).toBeNull();
-    expect(await totalXp()).toBe(50);
-  });
-
   it("未来日・不正な日付・アーカイブ済みの習慣は達成できない", async () => {
     const { id } = await createHabit();
     const complete = (logDate: string) =>
-      repos.achievements.complete({ habitId: id, logDate, source: "manual" });
+      repos.achievements.complete({ habitId: id, logDate });
     await expect(complete("2026-11-26")).rejects.toMatchObject({
       code: "invalid_input",
     });
@@ -153,11 +137,7 @@ describe("達成と XP", () => {
 
   it("アーカイブしても過去の記録と XP は残る", async () => {
     const { id } = await createHabit();
-    await repos.achievements.complete({
-      habitId: id,
-      logDate: TODAY,
-      source: "manual",
-    });
+    await repos.achievements.complete({ habitId: id, logDate: TODAY });
     await repos.habits.archive(id);
     expect(await repos.achievements.listLogs()).toHaveLength(1);
     expect(await totalXp()).toBe(50);
@@ -184,22 +164,6 @@ describe("関連データ", () => {
     });
     await repos.goals.remove(goal.id);
     expect((await repos.tasks.list())[0]?.goalId).toBeNull();
-  });
-
-  it("記録がある種目は削除できない", async () => {
-    const exercise = await repos.exercises.create({ name: "ベンチプレス" });
-    await repos.workouts.create({
-      workoutDate: TODAY,
-      exerciseId: exercise.id,
-      weightKg: 60,
-      reps: 10,
-      sets: 3,
-      memo: "",
-    });
-    await expect(repos.exercises.remove(exercise.id)).rejects.toMatchObject({
-      code: "invalid_input",
-    });
-    expect(await repos.exercises.list()).toHaveLength(1);
   });
 
   it("振り返りは1日1件で上書きされる", async () => {

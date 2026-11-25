@@ -1,13 +1,11 @@
 import type {
   Challenge,
   DailyReview,
-  Exercise,
   Goal,
   Habit,
   HabitLog,
   Profile,
   Task,
-  WorkoutLog,
   XpTransaction,
 } from "@/lib/domain/types";
 import { RepositoryError } from "../errors";
@@ -23,8 +21,6 @@ export interface LocalDatabaseState {
   challenges: Challenge[];
   goals: Goal[];
   tasks: Task[];
-  exercises: Exercise[];
-  workouts: WorkoutLog[];
   dailyReviews: DailyReview[];
 }
 
@@ -39,8 +35,6 @@ function createEmptyState(): LocalDatabaseState {
     challenges: [],
     goals: [],
     tasks: [],
-    exercises: [],
-    workouts: [],
     dailyReviews: [],
   };
 }

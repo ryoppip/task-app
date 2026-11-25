@@ -3,14 +3,11 @@ import type {
   Challenge,
   DailyReview,
   Entity,
-  Exercise,
   Goal,
   Habit,
   HabitLog,
-  HabitLogSource,
   Profile,
   Task,
-  WorkoutLog,
   XpTransaction,
 } from "@/lib/domain/types";
 
@@ -43,17 +40,10 @@ export interface HabitRepository {
   archive(id: string): Promise<Habit>;
 }
 
-export interface CompleteHabitInput {
+/** 1つの習慣の1日分を指す */
+export interface HabitDay {
   habitId: string;
   logDate: DateKey;
-  source: HabitLogSource;
-}
-
-export interface CancelHabitInput {
-  habitId: string;
-  logDate: DateKey;
-  /** 指定すると、その方法で達成した記録だけを取り消す */
-  onlySource?: HabitLogSource;
 }
 
 /**
@@ -63,9 +53,9 @@ export interface CancelHabitInput {
 export interface AchievementRepository {
   listLogs(): Promise<HabitLog[]>;
   listXpTransactions(): Promise<XpTransaction[]>;
-  complete(input: CompleteHabitInput): Promise<HabitLog>;
+  complete(input: HabitDay): Promise<HabitLog>;
   /** 取り消した記録を返す。対象がなければ null */
-  cancel(input: CancelHabitInput): Promise<HabitLog | null>;
+  cancel(input: HabitDay): Promise<HabitLog | null>;
 }
 
 export interface DailyReviewRepository {
@@ -83,8 +73,6 @@ export interface Repositories {
   challenges: CrudRepository<Challenge>;
   goals: CrudRepository<Goal>;
   tasks: CrudRepository<Task>;
-  exercises: CrudRepository<Exercise>;
-  workouts: CrudRepository<WorkoutLog>;
   dailyReviews: DailyReviewRepository;
   /** 別タブなど、この画面の外で起きた変更を購読する。戻り値で解除 */
   subscribeExternalChanges(listener: () => void): () => void;
