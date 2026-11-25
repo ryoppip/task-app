@@ -55,6 +55,28 @@ describe("保存", () => {
     expect(await repos.habits.list()).toEqual([habit]);
   });
 
+  it("選んだキャラクターが残る", async () => {
+    expect((await repos.profile.get()).characterId).toBe("shimaenaga");
+    await repos.profile.update({ characterId: "kiwi" });
+    repos = open();
+    expect((await repos.profile.get()).characterId).toBe("kiwi");
+  });
+
+  it.each([undefined, "unknown"])(
+    "characterId が %s の古いデータは、初期のキャラクターになる",
+    async (characterId) => {
+      const profile = { id: "a", displayName: "旧データ", characterId };
+      data.set(
+        LOCAL_STORAGE_KEY,
+        JSON.stringify({ version: 1, state: { profile } }),
+      );
+      expect(await repos.profile.get()).toMatchObject({
+        displayName: "旧データ",
+        characterId: "shimaenaga",
+      });
+    },
+  );
+
   it("壊れたデータを上書きしない", async () => {
     data.set(LOCAL_STORAGE_KEY, "{broken");
     await expect(repos.profile.get()).rejects.toMatchObject({

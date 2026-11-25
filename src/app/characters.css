@@ -1,0 +1,92 @@
+/*
+ * キャラクターの配色。data-character を付けた要素の中で、
+ * fill-character-body などのトークンがそのキャラクターの色になる。
+ * トークンの定義は globals.css にある。
+ */
+[data-character="shimaenaga"] {
+  --character-body: #fffdfb;
+  --character-belly: #fffdfb;
+  --character-arm: #fffdfb;
+  --character-leg: #8c7b72;
+  --character-mark: #6b5d56;
+  --character-beak: #4a4040;
+  --character-outline: #5d514c;
+  --character-accent: #7fb7dd;
+}
+
+[data-character="kiwi"] {
+  --character-body: #a9774f;
+  --character-belly: #c4966c;
+  --character-arm: #a9774f;
+  --character-leg: #d8b48c;
+  --character-mark: #86593a;
+  --character-beak: #f0d9b0;
+  --character-outline: #5b3b26;
+  --character-accent: #8dbb4e;
+}
+
+[data-character="penguin"] {
+  --character-body: #4d6285;
+  --character-belly: #ffffff;
+  --character-arm: #4d6285;
+  --character-leg: #f3a64a;
+  --character-mark: #ffffff;
+  --character-beak: #f3a64a;
+  --character-outline: #2a3750;
+  --character-accent: #e0665c;
+}
+
+[data-character="hamster"] {
+  --character-body: #f3c78b;
+  --character-belly: #fff6e8;
+  --character-arm: #f3c78b;
+  --character-leg: #f3c78b;
+  --character-mark: #fff6e8;
+  --character-beak: #e58f86;
+  --character-outline: #80552f;
+  --character-accent: #f08a4b;
+}
+
+[data-character="cat"] {
+  --character-body: #bcc3cf;
+  --character-belly: #ffffff;
+  --character-arm: #bcc3cf;
+  --character-leg: #bcc3cf;
+  --character-mark: #838c9c;
+  --character-beak: #e58f9a;
+  --character-outline: #4c5464;
+  --character-accent: #9179c9;
+}
+
+[data-character="panda"] {
+  --character-body: #fffefc;
+  --character-belly: #fffefc;
+  --character-arm: #55565f;
+  --character-leg: #55565f;
+  --character-mark: #55565f;
+  --character-beak: #3b3c44;
+  --character-outline: #34353c;
+  --character-accent: #4fa77c;
+}
+
+[data-character="rabbit"] {
+  --character-body: #fbe6e1;
+  --character-belly: #fffaf8;
+  --character-arm: #fbe6e1;
+  --character-leg: #fbe6e1;
+  --character-mark: #f3b6b3;
+  --character-beak: #e58f9a;
+  --character-outline: #8a5f5f;
+  --character-accent: #e57f9c;
+}
+
+[data-character="otter"] {
+  --character-body: #a98468;
+  --character-belly: #f4e3cb;
+  --character-arm: #a98468;
+  --character-leg: #a98468;
+  --character-mark: #f4e3cb;
+  --character-beak: #4d382d;
+  --character-outline: #553d30;
+  --character-accent: #3f9cae;
+}

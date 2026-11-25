@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./characters.css";
 
 /* 色はここで定義したトークンだけを使う(既定パレットは無効化) */
 @theme {
@@ -13,10 +14,6 @@
   --color-muted: #5f6b7a;
   --color-line: #e9ecef;
   --color-danger: #b4483f;
-  --color-character-skin: #f1c9a5;
-  --color-character-shade: #dba67e;
-  --color-character-light: #fbe0c6;
-  --color-character-belt: #8a5a3c;
 
   --radius-card: 0.625rem;
   --radius-control: 0.5rem;
@@ -33,6 +30,25 @@
       opacity: 0;
     }
   }
+}
+
+/* キャラクター用。値は characters.css がキャラクターごとに決める */
+@theme inline {
+  --color-character-body: var(--character-body);
+  --color-character-belly: var(--character-belly);
+  --color-character-arm: var(--character-arm);
+  --color-character-leg: var(--character-leg);
+  --color-character-mark: var(--character-mark);
+  --color-character-beak: var(--character-beak);
+  --color-character-outline: var(--character-outline);
+  --color-character-accent: var(--character-accent);
+}
+
+@theme {
+  --color-character-eye: #2b2a33;
+  --color-character-cheek: #f6a9a4;
+  --color-character-sweat: #8fc4e8;
+  --color-character-spark: #f5c84c;
 }
 
 @layer base {

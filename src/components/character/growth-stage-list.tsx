@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { CharacterId } from "@/lib/character/characters";
 import { FIGURE_HEIGHT, FIGURE_WIDTH } from "@/lib/character/figure";
 import { getCharacterImage } from "@/lib/character/images";
 import {
@@ -8,19 +9,23 @@ import {
 } from "@/lib/domain/growth";
 import { CharacterFigure } from "./character-figure";
 
-const FIGURE_CLASS = "mx-auto h-40 w-auto object-contain sm:h-52";
+const FIGURE_CLASS = "mx-auto h-36 w-auto object-contain sm:h-44";
+
+interface GrowthStageListProps {
+  characterId: CharacterId;
+  currentStage: GrowthStage | null;
+}
 
 /** 4つの節目の体型を並べて表示する */
 export function GrowthStageList({
+  characterId,
   currentStage,
-}: {
-  currentStage: GrowthStage;
-}) {
+}: GrowthStageListProps) {
   return (
     <ol className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
       {GROWTH_STAGES.map(({ stage, label, minDays }) => {
         const isCurrent = stage === currentStage;
-        const image = getCharacterImage(stage);
+        const image = getCharacterImage(characterId, stage);
         return (
           <li
             key={stage}
@@ -39,6 +44,7 @@ export function GrowthStageList({
               />
             ) : (
               <CharacterFigure
+                characterId={characterId}
                 bodyProgress={toBodyProgress(minDays)}
                 className={FIGURE_CLASS}
               />

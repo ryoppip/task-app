@@ -1,3 +1,4 @@
+import type { CharacterId } from "@/lib/character/characters";
 import type { DateKey, Weekday } from "@/lib/date/date-key";
 
 /** ISO 8601 の日時文字列 */
@@ -29,6 +30,7 @@ export interface Target {
 
 export interface Profile extends Entity {
   displayName: string;
+  characterId: CharacterId;
 }
 
 export interface Habit extends Entity {

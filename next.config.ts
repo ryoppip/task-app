@@ -1,15 +1,22 @@
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import type { NextConfig } from "next";
 
-// public/character/stage-N.png を置くと、その段階は SVG より優先される(要再ビルド)
-const characterPngStages = [1, 2, 3, 4].filter((stage) =>
-  existsSync(join(process.cwd(), "public", "character", `stage-${stage}.png`)),
-);
+// public/character/<キャラクターID>/stage-N.png を置くと、SVG より優先される(要再ビルド)
+const imageRoot = join(process.cwd(), "public", "character");
+const characterImages = existsSync(imageRoot)
+  ? readdirSync(imageRoot, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .flatMap(({ name }) =>
+        [1, 2, 3, 4]
+          .map((stage) => `${name}/stage-${stage}.png`)
+          .filter((path) => existsSync(join(imageRoot, path))),
+      )
+  : [];
 
 const nextConfig: NextConfig = {
   env: {
-    CHARACTER_PNG_STAGES: characterPngStages.join(","),
+    CHARACTER_IMAGES: characterImages.join(","),
   },
   turbopack: {
     rules: {

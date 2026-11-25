@@ -1,3 +1,4 @@
+import { DEFAULT_CHARACTER_ID, isCharacterId } from "@/lib/character/characters";
 import type {
   Challenge,
   DailyReview,
@@ -60,7 +61,12 @@ function parseState(raw: string): LocalDatabaseState {
       : value === null || isRecord(value);
     if (!valid) throw new Error(`${key} の形式が不正です`);
   }
-  return { ...state, ...stored };
+  const merged: LocalDatabaseState = { ...state, ...stored };
+  // キャラクター選択の導入前に保存されたデータには characterId がない
+  if (merged.profile && !isCharacterId(merged.profile.characterId)) {
+    merged.profile.characterId = DEFAULT_CHARACTER_ID;
+  }
+  return merged;
 }
 
 /**

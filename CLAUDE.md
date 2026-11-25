@@ -6,7 +6,7 @@
 
 - 名称: Habit Quest(習慣・目標・成長記録を一元管理する Web アプリ)
 - 技術: Next.js(App Router)/ React / TypeScript(strict)/ Tailwind CSS v4 / Vitest。Supabase は STEP 9、Recharts は使う STEP で導入
-- 中心となる体験: 習慣を記録するほど、細身のキャラクターが筋肉質に成長していく様子を見せる
+- 中心となる体験: 習慣を記録するほど、ガリガリの動物キャラクターがゴリマッチョに成長していく様子を見せる
 - 対象外: 筋トレ・ジム記録(種目・重量・回数など)。筋トレも、ほかと同じ1つの習慣として扱う
 - 進め方: STEP 1〜10 の順に実装し(STEP 5 のキャラクター成長は STEP 2 に統合、STEP 6 の筋トレ・ジム記録は欠番)、各 STEP の完了ごとに報告してユーザーの確認を待つ
 
@@ -36,10 +36,11 @@ Next.js は学習データと仕様が異なる場合がある。詳細は @AGEN
 
 - `any` を使わない
 - 日付は Asia/Tokyo 基準の `YYYY-MM-DD`。`src/lib/date/date-key.ts` の関数を使い、`Date` の日付計算を直接書かない
-- 色は `src/app/globals.css` のトークンだけを使う(Tailwind の既定パレットは無効)。文字とボタンの緑は `primary-strong`、図形は `primary`
+- 色は `src/app/globals.css`(キャラクターの配色は `src/app/characters.css`)のトークンだけを使う(Tailwind の既定パレットは無効)。文字とボタンの緑は `primary-strong`、図形は `primary`
 - 累計 XP は `xpTransactions` の合計を正とする。達成・取消は必ず `repositories.achievements` を通す
 - キャラクターの体型は、習慣を1つ以上達成した日の累計で決まる(0日→90日で連続的に変化、30・60・90日が段階の節目)。判定は `src/lib/domain/growth.ts`、体型の描画は `src/lib/character/figure.ts` にまとめる
-- `public/character/stage-1.png`〜`stage-4.png` を置くと、その段階は SVG より優先される(要再ビルド)
+- キャラクターはゆるくてかわいいオリジナルの動物で、既存作品のキャラクターに似せない。追加するときは `src/lib/character/characters.ts`、`characters.css`、`src/components/character/` の頭の部品と `PARTS` に足す。体の骨格は全キャラクター共通
+- `public/character/<キャラクターID>/stage-1.png`〜`stage-4.png` を置くと、その段階は SVG より優先される(要再ビルド)
 - ゲーム要素を増やしすぎず、「必ず習慣になる」と保証する文言は使わない
 
 ## Git 運用ルール

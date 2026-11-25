@@ -9,7 +9,7 @@ export interface GrowthStageInfo {
   minDays: number;
 }
 
-const FIRST_STAGE: GrowthStageInfo = { stage: 1, label: "細身", minDays: 0 };
+const FIRST_STAGE: GrowthStageInfo = { stage: 1, label: "ガリガリ", minDays: 0 };
 const FINAL_STAGE: GrowthStageInfo = {
   stage: 4,
   label: "ゴリマッチョ",
@@ -18,7 +18,7 @@ const FINAL_STAGE: GrowthStageInfo = {
 
 export const GROWTH_STAGES: readonly GrowthStageInfo[] = [
   FIRST_STAGE,
-  { stage: 2, label: "引き締まった体", minDays: 30 },
+  { stage: 2, label: "細マッチョ", minDays: 30 },
   { stage: 3, label: "マッチョ", minDays: 60 },
   FINAL_STAGE,
 ];

@@ -1,19 +1,24 @@
 "use client";
 
+import Link from "next/link";
 import { Character } from "@/components/character/character";
 import { GrowthStageList } from "@/components/character/growth-stage-list";
 import { Card } from "@/components/ui/card";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { useGrowthSummary, type GrowthSummary } from "@/hooks/use-growth-summary";
+import { useProfile } from "@/hooks/use-profile";
+import type { CharacterId } from "@/lib/character/characters";
 import { toErrorMessage } from "@/lib/repositories/errors";
 
 export function GrowthSection() {
-  const { summary, error } = useGrowthSummary();
+  const { profile, error: profileError } = useProfile();
+  const { summary, error: summaryError } = useGrowthSummary();
+  const error = profileError ?? summaryError;
 
   return (
     <Card>
-      {summary ? (
-        <GrowthContent summary={summary} />
+      {summary && profile ? (
+        <GrowthContent summary={summary} characterId={profile.characterId} />
       ) : error ? (
         <p role="alert" className="text-sm text-danger">
           {toErrorMessage(error)}
@@ -27,13 +32,30 @@ export function GrowthSection() {
   );
 }
 
-function GrowthContent({ summary }: { summary: GrowthSummary }) {
+interface GrowthContentProps {
+  summary: GrowthSummary;
+  characterId: CharacterId;
+}
+
+function GrowthContent({ summary, characterId }: GrowthContentProps) {
   const { growth, level, totalXp, todayXp } = summary;
 
   return (
     <>
-      <div className="grid items-center gap-6 sm:grid-cols-[14rem_1fr] sm:gap-10">
-        <Character growth={growth} className="mx-auto h-80 w-auto sm:h-96" />
+      <div className="grid items-center gap-6 sm:grid-cols-[18rem_1fr] sm:gap-8">
+        <div className="text-center">
+          <Character
+            characterId={characterId}
+            growth={growth}
+            className="mx-auto h-80 w-auto max-w-full"
+          />
+          <Link
+            href="/characters"
+            className="inline-flex min-h-11 items-center rounded-control px-3 text-sm text-primary-strong underline-offset-4 hover:underline"
+          >
+            キャラクターを変える
+          </Link>
+        </div>
 
         <div className="space-y-6">
           <div>
@@ -97,7 +119,10 @@ function GrowthContent({ summary }: { summary: GrowthSummary }) {
         <summary className="rounded-control py-2 text-sm font-medium">
           成長の段階を見る
         </summary>
-        <GrowthStageList currentStage={growth.current.stage} />
+        <GrowthStageList
+          characterId={characterId}
+          currentStage={growth.current.stage}
+        />
       </details>
     </>
   );

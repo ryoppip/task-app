@@ -14,7 +14,6 @@ describe("buildFigure", () => {
         figure.upperArm,
         figure.forearm,
         figure.leg,
-        figure.shoe,
       ]) {
         const values = coordinates(path);
         expect(values.length).toBeGreaterThan(0);
