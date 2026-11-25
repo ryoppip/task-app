@@ -1,4 +1,7 @@
-import { DEFAULT_CHARACTER_ID } from "@/lib/character/characters";
+import {
+  DEFAULT_BODY_TYPE,
+  DEFAULT_CHARACTER_ID,
+} from "@/lib/character/characters";
 import { isDateKey, toDateKey, type DateKey } from "@/lib/date/date-key";
 import type {
   Challenge,
@@ -100,6 +103,7 @@ export function createLocalRepositories({
       ...createEntity(),
       displayName: "",
       characterId: DEFAULT_CHARACTER_ID,
+      bodyType: DEFAULT_BODY_TYPE,
     };
     return state.profile;
   }

@@ -1,25 +1,35 @@
+import type { BodyType } from "@/lib/character/characters";
 import type { HabitLog } from "./types";
 
 export type GrowthStage = 1 | 2 | 3 | 4;
 
 export interface GrowthStageInfo {
   stage: GrowthStage;
-  label: string;
+  /** スタートの体型ごとの段階名 */
+  labels: Record<BodyType, string>;
   /** この段階になる累計達成日数 */
   minDays: number;
 }
 
-const FIRST_STAGE: GrowthStageInfo = { stage: 1, label: "ガリガリ", minDays: 0 };
+const FIRST_STAGE: GrowthStageInfo = {
+  stage: 1,
+  labels: { slim: "ガリガリ", chubby: "ぽってり" },
+  minDays: 0,
+};
 const FINAL_STAGE: GrowthStageInfo = {
   stage: 4,
-  label: "ゴリマッチョ",
+  labels: { slim: "ゴリマッチョ", chubby: "ゴリマッチョ" },
   minDays: 90,
 };
 
 export const GROWTH_STAGES: readonly GrowthStageInfo[] = [
   FIRST_STAGE,
-  { stage: 2, label: "細マッチョ", minDays: 30 },
-  { stage: 3, label: "マッチョ", minDays: 60 },
+  {
+    stage: 2,
+    labels: { slim: "細マッチョ", chubby: "がっちり" },
+    minDays: 30,
+  },
+  { stage: 3, labels: { slim: "マッチョ", chubby: "マッチョ" }, minDays: 60 },
   FINAL_STAGE,
 ];
 

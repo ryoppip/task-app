@@ -1,4 +1,9 @@
-import { DEFAULT_CHARACTER_ID, isCharacterId } from "@/lib/character/characters";
+import {
+  DEFAULT_BODY_TYPE,
+  DEFAULT_CHARACTER_ID,
+  isBodyType,
+  isCharacterId,
+} from "@/lib/character/characters";
 import type {
   Challenge,
   DailyReview,
@@ -62,9 +67,16 @@ function parseState(raw: string): LocalDatabaseState {
     if (!valid) throw new Error(`${key} の形式が不正です`);
   }
   const merged: LocalDatabaseState = { ...state, ...stored };
-  // キャラクター選択の導入前に保存されたデータには characterId がない
-  if (merged.profile && !isCharacterId(merged.profile.characterId)) {
-    merged.profile.characterId = DEFAULT_CHARACTER_ID;
+  // 選択機能の導入前に保存されたデータには、キャラクターや体型がない
+  if (merged.profile) {
+    const { characterId, bodyType } = merged.profile;
+    merged.profile = {
+      ...merged.profile,
+      characterId: isCharacterId(characterId)
+        ? characterId
+        : DEFAULT_CHARACTER_ID,
+      bodyType: isBodyType(bodyType) ? bodyType : DEFAULT_BODY_TYPE,
+    };
   }
   return merged;
 }

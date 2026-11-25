@@ -1,5 +1,5 @@
 import { useId, useMemo, type ComponentType } from "react";
-import type { CharacterId } from "@/lib/character/characters";
+import type { BodyType, CharacterId } from "@/lib/character/characters";
 import {
   buildFigure,
   FIGURE_HEIGHT,
@@ -13,7 +13,12 @@ import {
   ShimaenagaTail,
 } from "./bird-heads";
 import { BothSides } from "./both-sides";
-import { OUTLINE, OUTLINE_PROPS, type Expression } from "./face";
+import {
+  OUTLINE,
+  OUTLINE_PROPS,
+  type Expression,
+  type TailProps,
+} from "./face";
 import { BirdFoot, PawFoot, type FootProps } from "./feet";
 import {
   CatHead,
@@ -29,7 +34,7 @@ import {
 interface CharacterParts {
   Head: ComponentType<Expression>;
   Foot: ComponentType<FootProps>;
-  Tail?: ComponentType;
+  Tail?: ComponentType<TailProps>;
   /** 肩まわりを腕と同じ色にする */
   hasYoke?: boolean;
 }
@@ -45,7 +50,7 @@ const PARTS: Record<CharacterId, CharacterParts> = {
   otter: { Head: OtterHead, Foot: PawFoot, Tail: OtterTail },
 };
 
-const MUSCLE_LINE = `fill-none ${OUTLINE}`;
+const DETAIL_LINE = `fill-none ${OUTLINE}`;
 
 function Torso({ figure, hasYoke }: { figure: Figure; hasYoke: boolean }) {
   const clipId = useId();
@@ -68,35 +73,21 @@ function Torso({ figure, hasYoke }: { figure: Figure; hasYoke: boolean }) {
           className="fill-character-arm"
         />
       )}
-      <g opacity={figure.definition}>
+      <g
+        className={DETAIL_LINE}
+        {...OUTLINE_PROPS}
+        strokeWidth={2.2}
+        opacity={figure.definition * 0.7}
+      >
         <BothSides>
-          <path
-            d={figure.pecHighlight}
-            className="fill-card"
-            opacity={0.45}
-          />
-          <path
-            d={figure.pec}
-            className={MUSCLE_LINE}
-            {...OUTLINE_PROPS}
-            opacity={0.8}
-          />
+          <path d={figure.pec} />
         </BothSides>
-        <path
-          d={figure.abs}
-          className={MUSCLE_LINE}
-          {...OUTLINE_PROPS}
-          strokeWidth={2}
-          opacity={0.7}
-        />
+        <path d={figure.abs} opacity={0.8} />
       </g>
-      <path
-        d={figure.ribs}
-        className={MUSCLE_LINE}
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        opacity={figure.frailty * 0.65}
-      />
+      <g className={DETAIL_LINE} strokeWidth={2} strokeLinecap="round">
+        <path d={figure.ribs} opacity={figure.frailty * 0.5} />
+        <path d={figure.navel} opacity={figure.softness * 0.7} />
+      </g>
     </>
   );
 }
@@ -113,24 +104,14 @@ function Arm({ figure }: { figure: Figure }) {
         <path
           d={figure.tricepsShade}
           className="fill-character-outline"
-          opacity={0.18}
+          opacity={0.16}
         />
-        <path
-          d={figure.bicepsHighlight}
-          className="fill-card"
-          opacity={0.45}
-        />
+        <path d={figure.bicepsHighlight} className="fill-card" opacity={0.5} />
       </g>
-      <path d={figure.deltoid} className={limb} {...OUTLINE_PROPS} />
-      <path
-        d={figure.deltoidHighlight}
-        className="fill-card"
-        opacity={definition * 0.45}
-      />
       <circle {...fist} className={limb} {...OUTLINE_PROPS} />
       <path
-        d={`M${fist.cx - fist.r * 0.35} ${fist.cy - fist.r * 0.55}v${fist.r * 0.6}M${fist.cx + fist.r * 0.35} ${fist.cy - fist.r * 0.55}v${fist.r * 0.6}`}
-        className={MUSCLE_LINE}
+        d={`M${fist.cx - fist.r * 0.33} ${fist.cy - fist.r * 0.5}v${fist.r * 0.5}M${fist.cx + fist.r * 0.33} ${fist.cy - fist.r * 0.5}v${fist.r * 0.5}`}
+        className={DETAIL_LINE}
         strokeWidth={1.8}
         strokeLinecap="round"
       />
@@ -141,6 +122,24 @@ function Arm({ figure }: { figure: Figure }) {
         strokeWidth={2}
       />
     </>
+  );
+}
+
+/** 肩の筋肉。育つにつれて、体の手前に現れる */
+function Deltoid({ figure }: { figure: Figure }) {
+  return (
+    <g opacity={Math.min(1, figure.definition * 4)}>
+      <path
+        d={figure.deltoid}
+        className={`fill-character-arm ${OUTLINE}`}
+        {...OUTLINE_PROPS}
+      />
+      <path
+        d={figure.deltoidHighlight}
+        className="fill-card"
+        opacity={0.5}
+      />
+    </g>
   );
 }
 
@@ -158,29 +157,22 @@ function Leg({
         className={`fill-character-leg ${OUTLINE}`}
         {...OUTLINE_PROPS}
       />
-      <path
-        d={figure.calfLine}
-        className={MUSCLE_LINE}
-        {...OUTLINE_PROPS}
-        strokeWidth={2}
-        opacity={figure.definition * 0.7}
-      />
       <Foot x={figure.ankleX} width={figure.footWidth} />
     </>
   );
 }
 
-/** ガリガリのときの汗と、仕上がったときのきらめき */
-function Effects({ definition, frailty }: Expression) {
+/** がんばり始めの汗と、仕上がったときのきらめき */
+function Effects({ definition, frailty, softness }: Figure) {
   return (
     <>
       <path
-        d="M222 62Q230 75 226 81Q222 85 218 81Q214 75 222 62Z"
+        d="M231 58Q239 71 235 77Q231 81 227 77Q223 71 231 58Z"
         className="fill-character-sweat"
-        opacity={frailty}
+        opacity={Math.max(frailty, softness)}
       />
       <path
-        d="M248 92l3.5 8.5 8.5 3.5-8.5 3.5-3.5 8.5-3.5-8.5-8.5-3.5 8.5-3.5ZM52 72l3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"
+        d="M258 112l3.5 8.5 8.5 3.5-8.5 3.5-3.5 8.5-3.5-8.5-8.5-3.5 8.5-3.5ZM44 84l3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"
         className="fill-character-spark"
         opacity={Math.max(0, (definition - 0.8) / 0.2)}
       />
@@ -190,6 +182,7 @@ function Effects({ definition, frailty }: Expression) {
 
 interface CharacterFigureProps {
   characterId: CharacterId;
+  bodyType: BodyType;
   /** 体型の変化量(0〜1) */
   bodyProgress: number;
   /** 読み上げ用の説明。省略時は装飾として扱う */
@@ -199,16 +192,16 @@ interface CharacterFigureProps {
 
 export function CharacterFigure({
   characterId,
+  bodyType,
   bodyProgress,
   label,
   className = "",
 }: CharacterFigureProps) {
-  const figure = useMemo(() => buildFigure(bodyProgress), [bodyProgress]);
+  const figure = useMemo(
+    () => buildFigure(bodyProgress, bodyType),
+    [bodyProgress, bodyType],
+  );
   const { Head, Foot, Tail, hasYoke = false } = PARTS[characterId];
-  const expression: Expression = {
-    definition: figure.definition,
-    frailty: figure.frailty,
-  };
 
   return (
     <svg
@@ -217,12 +210,16 @@ export function CharacterFigure({
       aria-label={label}
       aria-hidden={label ? undefined : true}
       data-character={characterId}
+      data-body-type={bodyType}
       className={className}
     >
-      <ellipse cx="150" cy="341" rx="72" ry="7" className="fill-line" />
-      {Tail && <Tail />}
+      <ellipse cx="150" cy="297" rx="74" ry="7" className="fill-line" />
+      {Tail && <Tail hip={figure.hip} />}
       <BothSides>
         <Leg figure={figure} Foot={Foot} />
+      </BothSides>
+      <BothSides>
+        <Arm figure={figure} />
       </BothSides>
       <Torso figure={figure} hasYoke={hasYoke} />
       <path
@@ -231,10 +228,10 @@ export function CharacterFigure({
         {...OUTLINE_PROPS}
       />
       <BothSides>
-        <Arm figure={figure} />
+        <Deltoid figure={figure} />
       </BothSides>
-      <Head {...expression} />
-      <Effects {...expression} />
+      <Head definition={figure.definition} />
+      <Effects {...figure} />
     </svg>
   );
 }

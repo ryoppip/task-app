@@ -13,6 +13,20 @@ export type CharacterId = (typeof CHARACTERS)[number]["id"];
 
 export const DEFAULT_CHARACTER_ID: CharacterId = "shimaenaga";
 
+/** スタートの体型 */
+export const BODY_TYPES = [
+  { id: "slim", name: "ガリガリから" },
+  { id: "chubby", name: "ぽってりから" },
+] as const;
+
+export type BodyType = (typeof BODY_TYPES)[number]["id"];
+
+export const DEFAULT_BODY_TYPE: BodyType = "slim";
+
+export function isBodyType(value: unknown): value is BodyType {
+  return BODY_TYPES.some((bodyType) => bodyType.id === value);
+}
+
 export function isCharacterId(value: unknown): value is CharacterId {
   return CHARACTERS.some((character) => character.id === value);
 }

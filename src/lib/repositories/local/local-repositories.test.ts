@@ -55,17 +55,25 @@ describe("保存", () => {
     expect(await repos.habits.list()).toEqual([habit]);
   });
 
-  it("選んだキャラクターが残る", async () => {
+  it("選んだキャラクターと体型が残る", async () => {
     expect((await repos.profile.get()).characterId).toBe("shimaenaga");
-    await repos.profile.update({ characterId: "kiwi" });
+    await repos.profile.update({ characterId: "kiwi", bodyType: "chubby" });
     repos = open();
-    expect((await repos.profile.get()).characterId).toBe("kiwi");
+    expect(await repos.profile.get()).toMatchObject({
+      characterId: "kiwi",
+      bodyType: "chubby",
+    });
   });
 
   it.each([undefined, "unknown"])(
-    "characterId が %s の古いデータは、初期のキャラクターになる",
-    async (characterId) => {
-      const profile = { id: "a", displayName: "旧データ", characterId };
+    "キャラクターと体型が %s の古いデータは、初期値になる",
+    async (value) => {
+      const profile = {
+        id: "a",
+        displayName: "旧データ",
+        characterId: value,
+        bodyType: value,
+      };
       data.set(
         LOCAL_STORAGE_KEY,
         JSON.stringify({ version: 1, state: { profile } }),
@@ -73,6 +81,7 @@ describe("保存", () => {
       expect(await repos.profile.get()).toMatchObject({
         displayName: "旧データ",
         characterId: "shimaenaga",
+        bodyType: "slim",
       });
     },
   );

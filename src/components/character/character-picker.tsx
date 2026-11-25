@@ -6,19 +6,29 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useGrowthSummary } from "@/hooks/use-growth-summary";
 import { useProfile } from "@/hooks/use-profile";
-import { CHARACTERS, type CharacterId } from "@/lib/character/characters";
+import {
+  CHARACTERS,
+  DEFAULT_BODY_TYPE,
+  type BodyType,
+  type CharacterId,
+} from "@/lib/character/characters";
 import { toErrorMessage } from "@/lib/repositories/errors";
+import { BodyTypeSelector } from "./body-type-selector";
 import { GrowthStageList } from "./growth-stage-list";
 
 export function CharacterPicker() {
   const { profile, error, updateProfile } = useProfile();
   const { summary } = useGrowthSummary();
   const [saveError, setSaveError] = useState<string | null>(null);
+  const bodyType = profile?.bodyType ?? DEFAULT_BODY_TYPE;
 
-  async function handleSelect(characterId: CharacterId) {
+  async function save(patch: {
+    characterId?: CharacterId;
+    bodyType?: BodyType;
+  }) {
     setSaveError(null);
     try {
-      await updateProfile({ characterId });
+      await updateProfile(patch);
     } catch (cause) {
       setSaveError(toErrorMessage(cause));
     }
@@ -33,6 +43,13 @@ export function CharacterPicker() {
           {message}
         </p>
       )}
+      <Card>
+        <BodyTypeSelector
+          value={bodyType}
+          disabled={!profile}
+          onChange={(value) => save({ bodyType: value })}
+        />
+      </Card>
       {CHARACTERS.map(({ id, name, description }) => {
         const isSelected = profile?.characterId === id;
         return (
@@ -52,7 +69,7 @@ export function CharacterPicker() {
                   variant="secondary"
                   disabled={!profile}
                   aria-label={`${name}にする`}
-                  onClick={() => handleSelect(id)}
+                  onClick={() => save({ characterId: id })}
                 >
                   この子にする
                 </Button>
@@ -60,6 +77,7 @@ export function CharacterPicker() {
             </div>
             <GrowthStageList
               characterId={id}
+              bodyType={bodyType}
               currentStage={
                 isSelected ? (summary?.growth.current.stage ?? null) : null
               }

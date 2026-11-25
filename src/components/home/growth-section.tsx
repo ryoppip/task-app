@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { useGrowthSummary, type GrowthSummary } from "@/hooks/use-growth-summary";
 import { useProfile } from "@/hooks/use-profile";
-import type { CharacterId } from "@/lib/character/characters";
+import type { BodyType, CharacterId } from "@/lib/character/characters";
 import { toErrorMessage } from "@/lib/repositories/errors";
 
 export function GrowthSection() {
@@ -18,7 +18,11 @@ export function GrowthSection() {
   return (
     <Card>
       {summary && profile ? (
-        <GrowthContent summary={summary} characterId={profile.characterId} />
+        <GrowthContent
+          summary={summary}
+          characterId={profile.characterId}
+          bodyType={profile.bodyType}
+        />
       ) : error ? (
         <p role="alert" className="text-sm text-danger">
           {toErrorMessage(error)}
@@ -35,9 +39,14 @@ export function GrowthSection() {
 interface GrowthContentProps {
   summary: GrowthSummary;
   characterId: CharacterId;
+  bodyType: BodyType;
 }
 
-function GrowthContent({ summary, characterId }: GrowthContentProps) {
+function GrowthContent({
+  summary,
+  characterId,
+  bodyType,
+}: GrowthContentProps) {
   const { growth, level, totalXp, todayXp } = summary;
 
   return (
@@ -46,6 +55,7 @@ function GrowthContent({ summary, characterId }: GrowthContentProps) {
         <div className="text-center">
           <Character
             characterId={characterId}
+            bodyType={bodyType}
             growth={growth}
             className="mx-auto h-80 w-auto max-w-full"
           />
@@ -60,7 +70,7 @@ function GrowthContent({ summary, characterId }: GrowthContentProps) {
         <div className="space-y-6">
           <div>
             <p className="text-sm text-muted">第{growth.current.stage}段階</p>
-            <h2 className="text-2xl font-bold">{growth.current.label}</h2>
+            <h2 className="text-2xl font-bold">{growth.current.labels[bodyType]}</h2>
             <p className="mt-1 text-sm text-muted">
               習慣を達成した日{" "}
               <span className="text-lg font-bold text-foreground">
@@ -74,7 +84,7 @@ function GrowthContent({ summary, characterId }: GrowthContentProps) {
             <p className="text-sm">
               {growth.next ? (
                 <>
-                  あと <b>{growth.daysToNext}日</b> で「{growth.next.label}」
+                  あと <b>{growth.daysToNext}日</b> で「{growth.next.labels[bodyType]}」
                 </>
               ) : (
                 "最終段階に到達しました"
@@ -121,6 +131,7 @@ function GrowthContent({ summary, characterId }: GrowthContentProps) {
         </summary>
         <GrowthStageList
           characterId={characterId}
+          bodyType={bodyType}
           currentStage={growth.current.stage}
         />
       </details>

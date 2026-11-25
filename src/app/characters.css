@@ -4,89 +4,89 @@
  * トークンの定義は globals.css にある。
  */
 [data-character="shimaenaga"] {
-  --character-body: #fffdfb;
-  --character-belly: #fffdfb;
-  --character-arm: #fffdfb;
-  --character-leg: #8c7b72;
-  --character-mark: #6b5d56;
-  --character-beak: #4a4040;
-  --character-outline: #5d514c;
-  --character-accent: #7fb7dd;
+  --character-body: #fffdfa;
+  --character-belly: #fffdfa;
+  --character-arm: #fffdfa;
+  --character-leg: #a08d83;
+  --character-mark: #85746c;
+  --character-beak: #5b4e49;
+  --character-outline: #85746c;
+  --character-accent: #9ccbe8;
 }
 
 [data-character="kiwi"] {
-  --character-body: #a9774f;
-  --character-belly: #c4966c;
-  --character-arm: #a9774f;
-  --character-leg: #d8b48c;
-  --character-mark: #86593a;
-  --character-beak: #f0d9b0;
-  --character-outline: #5b3b26;
-  --character-accent: #8dbb4e;
+  --character-body: #bd9069;
+  --character-belly: #dcb88f;
+  --character-arm: #bd9069;
+  --character-leg: #e9c79c;
+  --character-mark: #a3764f;
+  --character-beak: #f9e3b8;
+  --character-outline: #7a5238;
+  --character-accent: #a5cf69;
 }
 
 [data-character="penguin"] {
-  --character-body: #4d6285;
+  --character-body: #7b9bc6;
   --character-belly: #ffffff;
-  --character-arm: #4d6285;
-  --character-leg: #f3a64a;
+  --character-arm: #7b9bc6;
+  --character-leg: #f9b862;
   --character-mark: #ffffff;
-  --character-beak: #f3a64a;
-  --character-outline: #2a3750;
-  --character-accent: #e0665c;
+  --character-beak: #f9b04e;
+  --character-outline: #465f87;
+  --character-accent: #f28b82;
 }
 
 [data-character="hamster"] {
-  --character-body: #f3c78b;
-  --character-belly: #fff6e8;
-  --character-arm: #f3c78b;
-  --character-leg: #f3c78b;
-  --character-mark: #fff6e8;
-  --character-beak: #e58f86;
-  --character-outline: #80552f;
-  --character-accent: #f08a4b;
+  --character-body: #f8d09a;
+  --character-belly: #fff8ec;
+  --character-arm: #f8d09a;
+  --character-leg: #f8d09a;
+  --character-mark: #fff8ec;
+  --character-beak: #ec938b;
+  --character-outline: #97693f;
+  --character-accent: #f7a668;
 }
 
 [data-character="cat"] {
-  --character-body: #bcc3cf;
+  --character-body: #d3d7e0;
   --character-belly: #ffffff;
-  --character-arm: #bcc3cf;
-  --character-leg: #bcc3cf;
-  --character-mark: #838c9c;
-  --character-beak: #e58f9a;
-  --character-outline: #4c5464;
-  --character-accent: #9179c9;
+  --character-arm: #d3d7e0;
+  --character-leg: #d3d7e0;
+  --character-mark: #a4acba;
+  --character-beak: #ec93a0;
+  --character-outline: #69707f;
+  --character-accent: #b39be0;
 }
 
 [data-character="panda"] {
   --character-body: #fffefc;
   --character-belly: #fffefc;
-  --character-arm: #55565f;
-  --character-leg: #55565f;
-  --character-mark: #55565f;
-  --character-beak: #3b3c44;
-  --character-outline: #34353c;
-  --character-accent: #4fa77c;
+  --character-arm: #6f6d78;
+  --character-leg: #6f6d78;
+  --character-mark: #6f6d78;
+  --character-beak: #4a4852;
+  --character-outline: #4a4852;
+  --character-accent: #7cc9a2;
 }
 
 [data-character="rabbit"] {
-  --character-body: #fbe6e1;
-  --character-belly: #fffaf8;
-  --character-arm: #fbe6e1;
-  --character-leg: #fbe6e1;
-  --character-mark: #f3b6b3;
-  --character-beak: #e58f9a;
-  --character-outline: #8a5f5f;
-  --character-accent: #e57f9c;
+  --character-body: #fdebe7;
+  --character-belly: #fffcfb;
+  --character-arm: #fdebe7;
+  --character-leg: #fdebe7;
+  --character-mark: #f8bdbb;
+  --character-beak: #ec93a0;
+  --character-outline: #a57676;
+  --character-accent: #f09ab2;
 }
 
 [data-character="otter"] {
-  --character-body: #a98468;
-  --character-belly: #f4e3cb;
-  --character-arm: #a98468;
-  --character-leg: #a98468;
-  --character-mark: #f4e3cb;
-  --character-beak: #4d382d;
-  --character-outline: #553d30;
-  --character-accent: #3f9cae;
+  --character-body: #c09d82;
+  --character-belly: #faecd8;
+  --character-arm: #c09d82;
+  --character-leg: #c09d82;
+  --character-mark: #faecd8;
+  --character-beak: #5f483c;
+  --character-outline: #75584a;
+  --character-accent: #6bbcc9;
 }
