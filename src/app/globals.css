@@ -13,6 +13,8 @@
   --color-muted: #5f6b7a;
   --color-line: #e9ecef;
   --color-danger: #b4483f;
+  --color-character-skin: #f1c9a5;
+  --color-character-shade: #d9a47c;
 
   --radius-card: 0.625rem;
   --radius-control: 0.5rem;
@@ -21,6 +23,14 @@
   --font-sans:
     "Segoe UI", "Hiragino Sans", "Noto Sans JP", "BIZ UDPGothic", Meiryo,
     sans-serif;
+
+  --animate-fade-in: fade-in 0.6s ease-out;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
 }
 
 @layer base {
