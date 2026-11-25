@@ -14,7 +14,9 @@
   --color-line: #e9ecef;
   --color-danger: #b4483f;
   --color-character-skin: #f1c9a5;
-  --color-character-shade: #d9a47c;
+  --color-character-shade: #dba67e;
+  --color-character-light: #fbe0c6;
+  --color-character-belt: #8a5a3c;
 
   --radius-card: 0.625rem;
   --radius-control: 0.5rem;
